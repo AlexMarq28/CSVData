@@ -4,10 +4,10 @@ public class CSVDataTester {
 		String[] colNames = { "loggingTime", "loggingSample", "accelerometerTimestamp_sinceReboot",
 				"accelerometerAccelerationX", "accelerometerAccelerationY", "accelerometerAccelerationZ",
 				"gyroTimestamp_sinceReboot", "gyroRotationX", "gyroRotationY", "gyroRotationZ" };
-		CSVData test = new CSVData("/Users/alemarquezvera/Documents/workspace/2016-10-14_10-50-58.csv", colNames, 1);
-		double[] t = test.getRow(1);
+		CSVData test = new CSVData("//Users//alemarquezvera//Documents//workspace//NoiseSmoothing//data//walkingSampleData-out.csv", colNames, 1);
+		double[] t = test.getColumn(1);
 		for (int i = 0; i < t.length; i++) {
-			System.out.println(t[i]);
+			System.out.print(t[i]+" ");
 		}
 	}
 }
