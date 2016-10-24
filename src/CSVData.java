@@ -35,6 +35,12 @@ public class CSVData {
 			}
 		}
 	}
+	
+
+	public double[][] getData() {
+		return data;
+	}
+
 
 	private String readFileAsString(String filepath) {
 		StringBuilder output = new StringBuilder();
@@ -88,7 +94,7 @@ public class CSVData {
 	 *            index of column to access
 	 * @return returns a double array containing the column
 	 */
-	public double[] getColumn(int colIndex) {
+	public static double[] getColumn(double[][]data,int colIndex) {
 		double[] result = new double[data.length];
 		for (int i = 0; i < data.length; i++) {
 			result[i] = data[i][colIndex];
@@ -114,7 +120,7 @@ public class CSVData {
 	 *            index of row to access
 	 * @return returns a double array containing the row
 	 */
-	public double[] getRow(int rowIndex) {
+	public static double[] getRow(double[][]data,int rowIndex) {
 
 		return data[rowIndex];
 	}
@@ -128,8 +134,8 @@ public class CSVData {
 	 *            last row in the consecutive set of rows
 	 * @return returns a 2d double array containing the specified rows
 	 */
-	public double[][] getRows(int startRow, int endRow) {
-		double[][] result = new double[endRow - startRow][this.data[0].length];
+	public static double[][] getRows(double[][]data,int startRow, int endRow) {
+		double[][] result = new double[endRow - startRow][data[0].length];
 		for (int i = startRow; i < endRow; i++) {
 			result[i - startRow] = data[i];
 		}
@@ -160,10 +166,10 @@ public class CSVData {
 	 *            last column in the consecutive set of rows
 	 * @return returns a 2d double array containing the specified columns
 	 */
-	public double[][] getColumns(int startColumn, int endColumn) {
+	public static double[][] getColumns(double[][]data,int startColumn, int endColumn) {
 		double[][] result = new double[endColumn - startColumn][data.length];
 		for (int i = startColumn; i < endColumn; i++) {
-			result[i - startColumn] = this.getColumn(i);
+			result[i - startColumn] = getColumn(data,i);
 		}
 		return result;
 	}
@@ -175,10 +181,10 @@ public class CSVData {
 	 *            array containing the indexes of the desired columns
 	 * @return returns a 2d double array containing the specified columns
 	 */
-	public double[][] getColumns(int[] indexes) {
+	public static double[][] getColumns(double[][]data,int[] indexes) {
 		double[][] result = new double[indexes.length][data.length];
 		for (int i = 0; i < indexes.length; i++) {
-			result[i] = this.getColumn(indexes[i]);
+			result[i] = getColumn(data,indexes[i]);
 		}
 		return result;
 	}
@@ -191,7 +197,7 @@ public class CSVData {
 	 * @param values
 	 *            what to put inside the column
 	 */
-	public void setColumn(int colIndex, double[] values) {
+	public static void setColumn(double[][]data,int colIndex, double[] values) {
 
 		for (int i = 0; i < data.length; i++) {
 			data[i][colIndex] = values[i];

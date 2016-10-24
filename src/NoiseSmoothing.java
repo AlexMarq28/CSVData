@@ -10,9 +10,9 @@ public class NoiseSmoothing {
 		String names = "time (ms),  accel x,  accel y,  accel z,  gryo x,  gyro y,  gyro z,  linear accel x,  linear accel y,  linear accel z,  orientation x,  orientation y,  orientation z";
 		String[] colNames = names.split(",  ");
 		CSVData test = new CSVData("data//walkingSampleData-out.csv", colNames, 1);
-		double[] sample1 = test.getColumn(1);
-		double[] sample2 = test.getColumn(2);
-		double[] sample3 = test.getColumn(3);
+		double[] sample1 = CSVData.getColumn(test.getData(),1);
+		double[] sample2 = CSVData.getColumn(test.getData(),2);
+		double[] sample3 = CSVData.getColumn(test.getData(),3);
 
 		// double[] result = generalRunningAverage(sample, 20);
 
