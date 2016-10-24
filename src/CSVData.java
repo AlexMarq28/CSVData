@@ -167,9 +167,10 @@ public class CSVData {
 	 * @return returns a 2d double array containing the specified columns
 	 */
 	public static double[][] getColumns(double[][]data,int startColumn, int endColumn) {
-		double[][] result = new double[endColumn - startColumn][data.length];
+		double[][] result = new double[data.length][endColumn - startColumn];
 		for (int i = startColumn; i < endColumn; i++) {
-			result[i - startColumn] = getColumn(data,i);
+			for(int x=0;x<result.length;x++)
+			result[x][i - startColumn] = getColumn(data,i)[x];
 		}
 		return result;
 	}
