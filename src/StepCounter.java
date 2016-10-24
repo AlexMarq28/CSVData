@@ -31,10 +31,6 @@ public class StepCounter {
 
 	
 
-	private static Object accelMags(int i) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	private static double calculateStandardDeviation(double[] arr, double mean) {
 		double totalSum = 0;
