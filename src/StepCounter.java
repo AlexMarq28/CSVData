@@ -2,35 +2,49 @@
 public class StepCounter {
 	static int countSteps(double[] times, double[][] sensorData) {
 		double[][] accelData = CSVData.getColumns(sensorData, 0, 3);
-		
+
 		double[][] gyroData = CSVData.getColumns(sensorData, 3, 6);
-				
+
 		System.out.println();
 		double[] accelMags = calculateMagnitudesFor(accelData);
 		double[] gyroMags = calculateMagnitudesFor(gyroData);
-		double accelMagMean = calculateMean(accelMags);
-		double gyroMagMean = calculateMean(gyroMags);
-		double accelStanDev = calculateStandardDeviation(accelMags,accelMagMean);
-		double gyroStanDev = calculateStandardDeviation(gyroMags,gyroMagMean);
-		int stepCounter=0;
-		for(int i=1;i<accelMags.length-1;i++){
-			if(accelMags[i]>accelMags[i-1]&&accelMags[i]>accelMags[i+1]){
-				if(accelMags[i]>accelMagMean+accelStanDev)stepCounter++;
-					
-				}
-			}
-		for(int i=1;i<gyroMags.length-1;i++){
-			if(gyroMags[i]>gyroMags[i-1]&&gyroMags[i]>gyroMags[i+1]){
-				if(gyroMags[i]>gyroMagMean+gyroStanDev)stepCounter++;
-					
-				}
-			}
-		return(stepCounter/=2);
 		
+		double gyroMagMean = calculateMean(gyroMags);
+		
+		double gyroStanDev = calculateStandardDeviation(gyroMags, gyroMagMean);
+		int stepCounter = 0;
+		
+		for (int i = 1; i < accelMags.length - 1; i++) {
+			
+			
+			int start=i-15;
+			int end=i+15;
+			if(start<0)start=0;
+			if(end>accelMags.length)end=accelMags.length;
+			double[]accelMagsWindow= new double[(end-start)];
+			for(int i1=start;i1<end;i1++){ 
+			accelMagsWindow[i1-start]=accelMags[i1];
+			}
+			double accelMagMean = calculateMean(accelMagsWindow);
+			double accelStanDev = calculateStandardDeviation(accelMagsWindow, accelMagMean);
+			
+			if (accelMags[i] > accelMags[i- 1] && accelMags[i] > accelMags[i+ 1]) {
+				if (accelMags[i] > accelMagMean + accelStanDev*0.50 )
+					
+					stepCounter++;
+				i+=2;
+
+			}
 		}
+//		 for(int i=1;i<gyroMags.length-1;i++){
+//		 if(gyroMags[i]>gyroMags[i-1]&&gyroMags[i]>gyroMags[i+1]){
+//		 if(gyroMags[i]>gyroMagMean+gyroStanDev)stepCounter++
+//		
+//		 }
+//		 }
+		return (stepCounter);
 
-	
-
+	}
 
 	private static double calculateStandardDeviation(double[] arr, double mean) {
 		double totalSum = 0;
