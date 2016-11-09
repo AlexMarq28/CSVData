@@ -1,9 +1,9 @@
 
 public class StepCounter {
 	static int countSteps(double[] times, double[][] sensorData) {
-		double[][] accelData = CSVData.getColumns(sensorData, 0, 3);
+		double[][] accelData = CSVData.getColumns(sensorData, 3, 6);
 
-		double[][] gyroData = CSVData.getColumns(sensorData, 3, 6);
+		double[][] gyroData = CSVData.getColumns(sensorData, 7, 10);
 
 		System.out.println();
 		double[] accelMags = calculateMagnitudesFor(accelData);
@@ -13,12 +13,12 @@ public class StepCounter {
 		
 		double gyroStanDev = calculateStandardDeviation(gyroMags, gyroMagMean);
 		int stepCounter = 0;
-		
+		double[]accelMagsSmooth = new double[accelMags.length/3];
 		for (int i = 1; i < accelMags.length - 1; i++) {
 			
 			
-			int start=i-15;
-			int end=i+15;
+			int start=i-1000;
+			int end=i+1000;
 			if(start<0)start=0;
 			if(end>accelMags.length)end=accelMags.length;
 			double[]accelMagsWindow= new double[(end-start)];
@@ -32,7 +32,7 @@ public class StepCounter {
 				if (accelMags[i] > accelMagMean + accelStanDev*0.50 )
 					
 					stepCounter++;
-				i+=2;
+				i+=25;
 
 			}
 		}
