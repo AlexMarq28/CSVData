@@ -1,47 +1,37 @@
 
 public class StepCounter {
 	static int countSteps(double[] times, double[][] sensorData) {
-		double[][] accelData = CSVData.getColumns(sensorData, 3, 6);
-
-		double[][] gyroData = CSVData.getColumns(sensorData, 7, 10);
-
+		int stepSpacing=2;
+		int thresholdWindow=100;
+		double threshold=0.40;
+		
+		double[][] accelData = CSVData.getColumns(sensorData, 1, 4);
+		
 		System.out.println();
 		double[] accelMags = calculateMagnitudesFor(accelData);
-		double[] gyroMags = calculateMagnitudesFor(gyroData);
-		
-		double gyroMagMean = calculateMean(gyroMags);
-		
-		double gyroStanDev = calculateStandardDeviation(gyroMags, gyroMagMean);
 		int stepCounter = 0;
-		double[]accelMagsSmooth = new double[accelMags.length/3];
 		for (int i = 1; i < accelMags.length - 1; i++) {
-			
-			
-			int start=i-1000;
-			int end=i+1000;
-			if(start<0)start=0;
-			if(end>accelMags.length)end=accelMags.length;
-			double[]accelMagsWindow= new double[(end-start)];
-			for(int i1=start;i1<end;i1++){ 
-			accelMagsWindow[i1-start]=accelMags[i1];
+
+			int start = i - thresholdWindow;
+			int end = i + thresholdWindow;
+			if (start < 0)
+				start = 0;
+			if (end > accelMags.length)
+				end = accelMags.length;
+			double[] accelMagsWindow = new double[(end - start)];
+			for (int i1 = start; i1 < end; i1++) {
+				accelMagsWindow[i1 - start] = accelMags[i1];
 			}
 			double accelMagMean = calculateMean(accelMagsWindow);
 			double accelStanDev = calculateStandardDeviation(accelMagsWindow, accelMagMean);
-			
-			if (accelMags[i] > accelMags[i- 1] && accelMags[i] > accelMags[i+ 1]) {
-				if (accelMags[i] > accelMagMean + accelStanDev*0.50 )
-					
-					stepCounter++;
-				i+=25;
 
+			if (accelMags[i] > accelMags[i - 1] && accelMags[i] > accelMags[i + 1]) {
+				if (accelMags[i] > accelMagMean + accelStanDev * threshold)
+
+					stepCounter++;
+				i += stepSpacing;
 			}
 		}
-//		 for(int i=1;i<gyroMags.length-1;i++){
-//		 if(gyroMags[i]>gyroMags[i-1]&&gyroMags[i]>gyroMags[i+1]){
-//		 if(gyroMags[i]>gyroMagMean+gyroStanDev)stepCounter++
-//		
-//		 }
-//		 }
 		return (stepCounter);
 
 	}
